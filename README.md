@@ -1,92 +1,33 @@
-# DSCommerce Frontend
+# DSCommerce — Frontend
 
-A modern e-commerce frontend application built with Next.js 16, React 19, TypeScript, and Tailwind CSS 4. This project is part of a full-stack application — the frontend is designed to integrate with a **Java Spring Boot** REST API backend (in progress).
-
----
-
-## Table of Contents
-
-- [Overview](#overview)
-- [Tech Stack](#tech-stack)
-- [Project Structure](#project-structure)
-- [Pages](#pages)
-- [Getting Started](#getting-started)
-- [Available Scripts](#available-scripts)
-- [Roadmap](#roadmap)
-- [Backend Integration](#backend-integration)
-
----
-
-## Overview
-
-DSCommerce is a product catalog application where users can browse products by name or category. The project follows a component-driven architecture using the **Next.js App Router**, with server components by default and client components only where interactivity is required.
-
-### Current Features
-
-- **Home page** — hero section with a call-to-action button navigating to the catalog
-- **Catalog page** — product grid with filter bar (name + category) and pagination
-- **Active navigation** — navbar highlights the current route automatically
-- **Study documentation** — every implementation step is documented in `/docs` for learning purposes
+A modern, dark-themed e-commerce frontend built with **Next.js 15** and **Tailwind CSS v4**, fully integrated with a [Java Spring Boot backend](https://github.com/mateusribeirocampos/project-spring-boot-dscommerce).
 
 ---
 
 ## Tech Stack
 
-| Technology | Version | Role |
-|---|---|---|
-| [Next.js](https://nextjs.org) | 16.1.6 | React framework (App Router) |
-| [React](https://react.dev) | 19.2.3 | UI library |
-| [TypeScript](https://www.typescriptlang.org) | 5.x | Static typing |
-| [Tailwind CSS](https://tailwindcss.com) | 4.x | Utility-first styling |
+| Layer | Technology |
+|-------|-----------|
+| Framework | Next.js 15 (App Router) |
+| Language | TypeScript |
+| Styling | Tailwind CSS v4 |
+| Auth | OAuth2 (Spring Authorization Server) + JWT |
+| State | React Context API + localStorage |
+| Backend | Spring Boot on [Render.com](https://project-spring-boot-dscommerce.onrender.com) |
 
 ---
 
-## Project Structure
+## Features
 
-```
-dscommerce/
-├── docs/                                         # Step-by-step study documentation
-│   ├── 001-Pagina-home-estrutura-e-funcoes.md
-│   └── 002-Pagina-catalogo-componentes-e-conceitos.md
-├── public/                                       # Static assets
-└── src/
-    └── app/                                      # Next.js App Router
-        ├── components/
-        │   ├── Navbar.tsx                        # Global navigation bar
-        │   └── ProductCard.tsx                   # Reusable product card
-        ├── catalogo/
-        │   └── page.tsx                          # Route: /catalogo
-        ├── layout.tsx                            # Root layout (wraps all pages)
-        ├── page.tsx                              # Route: / (home)
-        └── styles/
-            └── globals.css                       # Global styles + Tailwind import
-```
-
-### Routing convention
-
-The App Router maps the file system directly to URL routes:
-
-| File | URL |
-|---|---|
-| `src/app/page.tsx` | `/` |
-| `src/app/catalogo/page.tsx` | `/catalogo` |
-| `src/app/admin/page.tsx` | `/admin` *(planned)* |
-
----
-
-## Pages
-
-### `/` — Home
-
-Hero section introducing the catalog with a call-to-action button that navigates to `/catalogo`.
-
-### `/catalogo` — Product Catalog
-
-- **Filter bar** — text search by product name and category dropdown
-- **Product grid** — 4-column responsive grid of product cards
-- **Pagination** — numbered page controls
-
-> Currently using mock data. Will be replaced by API calls to the Spring Boot backend.
+- **Catalog** — paginated product listing with real-time name search and category filter
+- **Product detail** — full page with image, price, categories and add-to-cart
+- **Cart** — persisted cart with quantity controls, subtotal and checkout
+- **Authentication** — JWT login via OAuth2 password grant; token decoded client-side
+- **Registration** — new account creation via `POST /users/register`
+- **Admin area** (ROLE_ADMIN only)
+  - Product list with search, pagination, delete with confirmation
+  - Create new product with category selection
+  - Edit existing product
 
 ---
 
@@ -94,115 +35,111 @@ Hero section introducing the catalog with a call-to-action button that navigates
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org) 18.17 or later
-- npm, yarn, pnpm, or bun
+- Node.js ≥ 18
+- Running Spring Boot backend (locally or remote)
 
-### Installation
+### Install & run
 
 ```bash
-# Clone the repository
-git clone git@github.com:mateusribeirocampos/dscommerce-frontend.git
-
-# Navigate into the project
-cd dscommerce-frontend
-
-# Install dependencies
 npm install
+npm run dev     # http://localhost:3000
 ```
 
-### Running in development
+### Environment variables
+
+Copy `.env.example` to `.env.local` and fill in the values:
 
 ```bash
-npm run dev
+cp .env.example .env.local
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+| Variable | Description | Example |
+|----------|-------------|---------|
+| `NEXT_PUBLIC_API_URL` | Spring Boot API base URL | `http://localhost:8080` |
+| `NEXT_PUBLIC_OAUTH_CLIENT_ID` | OAuth2 client ID | `myclient` |
+| `NEXT_PUBLIC_OAUTH_CLIENT_SECRET` | OAuth2 client secret | `mysecret` |
+
+> For the Render.com deployment set `NEXT_PUBLIC_API_URL=https://project-spring-boot-dscommerce.onrender.com`
 
 ---
 
-## Available Scripts
-
-| Script | Description |
-|---|---|
-| `npm run dev` | Start the development server with hot-reload |
-| `npm run build` | Create an optimized production build |
-| `npm start` | Start the production server (requires build first) |
-| `npm run lint` | Run ESLint to check for code issues |
-
----
-
-## Roadmap
-
-### Frontend
-
-- [x] Home page with hero section
-- [x] Product catalog page with filter bar and pagination
-- [x] Active link highlighting in navbar
-- [ ] Functional search and category filter (client-side state)
-- [ ] Product detail page (`/catalogo/[id]`)
-- [ ] Admin dashboard (`/admin`)
-- [ ] Admin product form (create / edit / delete)
-- [ ] User authentication UI (login / register)
-- [ ] Shopping cart
-- [ ] Checkout flow
-
-### Integration
-
-- [ ] Fetch product list from Spring Boot API
-- [ ] Fetch categories from API
-- [ ] Implement JWT-based authentication with the backend
-- [ ] Connect admin CRUD operations to API endpoints
-
----
-
-## Backend Integration
-
-This frontend is designed to connect to a **Java Spring Boot** REST API. Once the backend is available, the mock data in the catalog page will be replaced by real `fetch` calls inside Next.js Server Components.
-
-### Expected API contract
+## Project Structure
 
 ```
-GET  /products?name=&categoryId=&page=&size=   → paginated product list
-GET  /products/{id}                            → single product detail
-GET  /categories                               → list of categories
-POST /oauth2/token                             → authentication (JWT)
+src/app/
+├── layout.tsx              # Root layout (Navbar + Providers)
+├── page.tsx                # / — Hero landing page
+├── catalogo/               # /catalogo — Product grid + search
+├── produto/[id]/           # /produto/:id — Product detail
+├── carrinho/               # /carrinho — Cart + checkout
+├── login/                  # /login — OAuth2 login
+├── registro/               # /registro — User registration
+├── admin/
+│   ├── layout.tsx          # Auth guard (ROLE_ADMIN only)
+│   ├── page.tsx            # Redirects → /admin/produtos
+│   └── produtos/
+│       ├── page.tsx        # Product list (search, paginate, delete)
+│       ├── ProductForm.tsx # Shared create/edit form component
+│       ├── novo/page.tsx   # Create product
+│       └── [id]/editar/    # Edit product
+├── components/
+│   ├── Navbar.tsx          # Sticky nav with cart badge + auth menu
+│   ├── ProductCard.tsx     # Reusable product card
+│   ├── AddToCartButton.tsx # Client island for cart interaction
+│   └── Providers.tsx       # AuthProvider + CartProvider wrapper
+├── context/
+│   ├── AuthContext.tsx     # JWT token management
+│   └── CartContext.tsx     # Cart state + localStorage persistence
+├── services/               # API fetch wrappers (one file per resource)
+├── lib/api.ts              # Base fetch helper + ApiError class
+└── types/index.ts          # All DTOs mirroring the backend
 ```
-
-### How data fetching will work in Next.js
-
-Server Components can fetch data directly — no `useEffect` needed:
-
-```tsx
-// src/app/catalogo/page.tsx (future implementation)
-export default async function CatalogoPage() {
-  const response = await fetch("http://localhost:8080/products");
-  const data = await response.json();
-
-  return (
-    <div>
-      {data.content.map((product) => (
-        <ProductCard key={product.id} product={product} />
-      ))}
-    </div>
-  );
-}
-```
-
-The backend is expected to run on `http://localhost:8080` in local development. A base URL environment variable will be configured for production.
 
 ---
 
-## Study Documentation
+## API Integration
 
-The `/docs` folder contains detailed explanations of every implementation step, written for learning purposes:
+The frontend communicates with the Spring Boot backend through a thin service layer:
 
-| File | Contents |
-|---|---|
-| `001-Pagina-home-estrutura-e-funcoes.md` | App Router, layout, Server Components, SVG, Tailwind basics |
-| `002-Pagina-catalogo-componentes-e-conceitos.md` | Client Components, `usePathname`, TypeScript types, CSS Grid, mock data |
+| Service | Endpoints |
+|---------|-----------|
+| `productService` | `GET /products`, `GET /products/{id}`, `POST /products`, `PUT /products/{id}`, `DELETE /products/{id}` |
+| `categoryService` | `GET /categories` |
+| `orderService` | `POST /orders`, `GET /orders/{id}` |
+| `userService` | `POST /users/register`, `GET /users/me` |
+| `authService` | `POST /oauth2/token` (password grant) |
+
+All protected routes send `Authorization: Bearer <token>` in the request header. The JWT token is stored in `localStorage` under the key `dscommerce:token` and decoded client-side to extract the user's email and roles.
 
 ---
 
-## License
+## Deployment
 
-This project is for educational purposes.
+### Vercel (frontend)
+
+1. Push to GitHub
+2. Import the project in the Vercel dashboard
+3. Set environment variables:
+   - `NEXT_PUBLIC_API_URL` → your Render.com backend URL
+   - `NEXT_PUBLIC_OAUTH_CLIENT_ID`
+   - `NEXT_PUBLIC_OAUTH_CLIENT_SECRET`
+4. Deploy
+
+### Backend CORS (Render.com)
+
+The Spring Boot backend must allow the Vercel domain. Set the `CORS_ORIGINS` environment variable on Render to your Vercel deployment URL:
+
+```
+CORS_ORIGINS=https://your-app.vercel.app
+```
+
+---
+
+## Scripts
+
+```bash
+npm run dev     # Development server (http://localhost:3000)
+npm run build   # Production build
+npm start       # Start production server
+npm run lint    # ESLint check
+```
