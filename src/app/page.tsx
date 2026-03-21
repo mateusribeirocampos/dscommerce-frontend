@@ -79,7 +79,7 @@ export default function Home() {
             </svg>
           </Link>
           <Link
-            href="/registro"
+            href="/register"
             className="px-6 py-3.5 rounded-xl font-semibold text-zinc-300 text-sm border border-zinc-700 hover:border-zinc-500 hover:text-white transition-colors"
           >
             Criar conta grátis

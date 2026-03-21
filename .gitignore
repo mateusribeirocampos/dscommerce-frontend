@@ -191,3 +191,5 @@ vite.config.ts.timestamp-*
 
 # Projects docs
 /docs/
+CLAUDE.md
+SKILL.md

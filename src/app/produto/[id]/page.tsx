@@ -188,10 +188,10 @@ function ProductDetail({ product }: { product: ProductDTO }) {
               <AddToCartButton product={product} />
 
               <Link
-                href="/carrinho"
+                href="/cart"
                 className="w-full py-3.5 rounded-xl font-semibold text-zinc-300 text-sm border border-zinc-700 hover:border-zinc-500 hover:text-white transition-colors text-center"
               >
-                Ver carrinho
+                View cart
               </Link>
             </div>
 

@@ -16,7 +16,7 @@ function formatPrice(value: number) {
 
 type OrderResult = { id: number; status: string } | null;
 
-export default function CarrinhoPage() {
+export default function CartPage() {
   const router = useRouter();
   const { items, removeItem, updateQuantity, clearCart, total, itemCount } =
     useCart();
@@ -27,7 +27,7 @@ export default function CarrinhoPage() {
 
   const handleCheckout = async () => {
     if (!isAuthenticated) {
-      router.push("/login?redirect=/carrinho");
+      router.push("/login?redirect=/cart");
       return;
     }
     setLoading(true);
@@ -91,10 +91,10 @@ export default function CarrinhoPage() {
             🛒
           </div>
           <h1 className="text-xl font-bold text-white mb-2">
-            Seu carrinho está vazio
+            Your cart is empty
           </h1>
           <p className="text-zinc-500 text-sm mb-8">
-            Explore o catálogo e adicione produtos ao carrinho
+            Browse the catalog and add products to your cart
           </p>
           <Link
             href="/catalogo"
@@ -116,9 +116,9 @@ export default function CarrinhoPage() {
       <div className="max-w-5xl mx-auto px-6 py-10">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-white mb-1">Meu Carrinho</h1>
+          <h1 className="text-2xl font-bold text-white mb-1">My Cart</h1>
           <p className="text-zinc-500 text-sm">
-            {itemCount} {itemCount === 1 ? "item" : "itens"}
+            {itemCount} {itemCount === 1 ? "item" : "items"}
           </p>
         </div>
 

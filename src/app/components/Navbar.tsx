@@ -75,7 +75,7 @@ export default function Navbar() {
         <div className="flex items-center gap-3">
           {/* Cart icon */}
           <Link
-            href="/carrinho"
+            href="/cart"
             className="relative p-2 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800/60 transition-colors"
           >
             <svg

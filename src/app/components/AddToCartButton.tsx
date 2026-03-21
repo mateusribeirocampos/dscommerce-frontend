@@ -29,7 +29,7 @@ export function AddToCartButton({ product }: { product: ProductDTO }) {
           : "linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)",
       }}
     >
-      {added ? "✓ Adicionado ao carrinho!" : "Adicionar ao Carrinho"}
+      {added ? "✓ Added to cart!" : "Add to Cart"}
     </button>
   );
 }

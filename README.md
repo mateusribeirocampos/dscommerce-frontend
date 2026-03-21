@@ -61,6 +61,17 @@ cp .env.example .env.local
 
 > For the Render.com deployment set `NEXT_PUBLIC_API_URL=https://project-spring-boot-dscommerce.onrender.com`
 
+### Development accounts
+
+The backend seed file (`import.sql`) creates two users for local testing:
+
+| Account | Email | Password | Roles |
+|---------|-------|----------|-------|
+| Maria Brown | `maria@gmail.com` | `123456` | `ROLE_CLIENT` |
+| Alex Green | `matcamp1981@gmail.com` | `123456` | `ROLE_ADMIN` + `ROLE_CLIENT` |
+
+Use Alex's credentials to access the `/admin` area.
+
 ---
 
 ## Project Structure
@@ -71,9 +82,9 @@ src/app/
 ├── page.tsx                # / — Hero landing page
 ├── catalogo/               # /catalogo — Product grid + search
 ├── produto/[id]/           # /produto/:id — Product detail
-├── carrinho/               # /carrinho — Cart + checkout
+├── cart/                   # /cart — Cart + checkout
 ├── login/                  # /login — OAuth2 login
-├── registro/               # /registro — User registration
+├── register/               # /register — User registration
 ├── admin/
 │   ├── layout.tsx          # Auth guard (ROLE_ADMIN only)
 │   ├── page.tsx            # Redirects → /admin/produtos

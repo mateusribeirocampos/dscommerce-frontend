@@ -174,7 +174,7 @@ export default function LoginPage() {
         <p className="text-center mt-6 text-zinc-500 text-sm">
           Não tem uma conta?{" "}
           <Link
-            href="/registro"
+            href="/register"
             className="text-indigo-400 hover:text-indigo-300 font-medium transition-colors"
           >
             Criar conta gratuitamente
