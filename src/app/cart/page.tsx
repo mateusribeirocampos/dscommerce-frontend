@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useCart } from "@/app/context/CartContext";
 import { useAuth } from "@/app/context/AuthContext";
 import { createOrder } from "@/app/services/orderService";
+import { saveOrderId } from "@/app/lib/orderHistory";
 
 function formatPrice(value: number) {
   return value.toLocaleString("pt-BR", {
@@ -20,7 +21,7 @@ export default function CartPage() {
   const router = useRouter();
   const { items, removeItem, updateQuantity, clearCart, total, itemCount } =
     useCart();
-  const { isAuthenticated, token } = useAuth();
+  const { isAuthenticated, token, userName } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [orderResult, setOrderResult] = useState<OrderResult>(null);
@@ -38,6 +39,8 @@ export default function CartPage() {
         token!
       );
       clearCart();
+      // persist order ID so the client can browse their history in the profile
+      if (userName) saveOrderId(userName, order.id);
       setOrderResult({ id: order.id, status: order.orderStatus });
     } catch {
       setError("Erro ao finalizar pedido. Tente novamente.");
@@ -68,15 +71,23 @@ export default function CartPage() {
           <p className="text-zinc-600 text-xs mb-8">
             Status: <span className="text-zinc-400">{orderResult.status}</span>
           </p>
-          <Link
-            href="/catalogo"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white text-sm transition-all hover:shadow-lg hover:shadow-indigo-500/25"
-            style={{
-              background: "linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)",
-            }}
-          >
-            Continuar comprando
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <Link
+              href={`/orders/${orderResult.id}`}
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-white text-sm transition-all hover:shadow-lg hover:shadow-indigo-500/25 hover:scale-[1.02] active:scale-[0.98]"
+              style={{
+                background: "linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)",
+              }}
+            >
+              Ver pedido
+            </Link>
+            <Link
+              href="/catalogo"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm text-zinc-400 hover:text-white border border-zinc-700 hover:border-zinc-500 transition-colors"
+            >
+              Continuar comprando
+            </Link>
+          </div>
         </div>
       </main>
     );
