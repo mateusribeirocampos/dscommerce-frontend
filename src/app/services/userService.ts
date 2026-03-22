@@ -19,3 +19,16 @@ export async function registerUser(data: UserInsertDTO): Promise<UserDTO> {
 export async function getMe(token: string): Promise<UserDTO> {
   return apiFetch<UserDTO>("/users/me", { token });
 }
+
+/**
+ * PUT /users/me
+ * Requires ROLE_CLIENT or ROLE_ADMIN. Updates the logged-in user's profile.
+ * UserUpdateDTO extends UserDTO — send full user object with updated fields.
+ */
+export async function updateMe(data: UserDTO, token: string): Promise<UserDTO> {
+  return apiFetch<UserDTO>("/users/me", {
+    method: "PUT",
+    body: JSON.stringify(data),
+    token,
+  });
+}
