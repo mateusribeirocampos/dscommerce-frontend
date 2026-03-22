@@ -12,7 +12,8 @@ import { login as apiLogin } from "@/app/services/authService";
 const TOKEN_KEY = "dscommerce:token";
 
 type JwtPayload = {
-  sub: string;
+  sub: string;       // clientId in this Spring implementation
+  username: string;  // actual user email — added by tokenCustomizer()
   authorities: string[];
   exp: number;
 };
@@ -38,6 +39,7 @@ type AuthContextType = {
   userName: string | null;
   isAdmin: boolean;
   isAuthenticated: boolean;
+  hydrated: boolean; // true once localStorage has been read on the client
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
 };
@@ -49,6 +51,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [token, setToken] = useState<string | null>(null);
   const [userName, setUserName] = useState<string | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [hydrated, setHydrated] = useState(false);
 
   // Hydrate from localStorage on mount (runs only on client)
   useEffect(() => {
@@ -56,15 +59,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (stored && !isTokenExpired(stored)) {
       applyToken(stored);
     } else {
-      // Clear expired token
       localStorage.removeItem(TOKEN_KEY);
     }
+    setHydrated(true);
   }, []);
 
   const applyToken = (raw: string) => {
     const payload = decodeJwt(raw);
     setToken(raw);
-    setUserName(payload?.sub ?? null);
+    // Spring's tokenCustomizer adds `username` = user's email.
+    // `sub` in this implementation is the clientId, not the user.
+    setUserName(payload?.username ?? payload?.sub ?? null);
     setIsAdmin(payload?.authorities?.includes("ROLE_ADMIN") ?? false);
   };
 
@@ -88,6 +93,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         userName,
         isAdmin,
         isAuthenticated: !!token,
+        hydrated,
         login,
         logout,
       }}
