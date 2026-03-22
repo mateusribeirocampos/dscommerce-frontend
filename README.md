@@ -1,6 +1,6 @@
 # DSCommerce — Frontend
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-black?logo=vercel)](https://dscommerce-frontend-git-main-mateusribeirocampos-projects.vercel.app)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-black?logo=vercel)](https://dscommerce-frontend.vercel.app)
 [![Next.js](https://img.shields.io/badge/Next.js-15-black?logo=next.js)](https://nextjs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)](https://www.typescriptlang.org)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-v4-38bdf8?logo=tailwindcss)](https://tailwindcss.com)
@@ -247,3 +247,5 @@ npm run lint    # ESLint
 ## Related
 
 - [DSCommerce Backend](https://github.com/mateusribeirocampos/project-spring-boot-dscommerce) — Spring Boot 3 · Spring Security · OAuth2 · PostgreSQL
+- [Live Frontend](https://dscommerce-frontend.vercel.app) — deployed on Vercel
+- [Live Backend API](https://project-spring-boot-dscommerce.onrender.com) — deployed on Render.com
