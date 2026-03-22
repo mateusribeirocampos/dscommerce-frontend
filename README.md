@@ -209,7 +209,7 @@ The frontend communicates with the Spring Boot backend through a typed service l
 2. Import the repo in [vercel.com/new](https://vercel.com/new)
 3. Set environment variables in **Settings → Environment Variables**:
 
-```
+```bash
 NEXT_PUBLIC_API_URL=https://project-spring-boot-dscommerce.onrender.com
 NEXT_PUBLIC_OAUTH_CLIENT_ID=myclientid
 NEXT_PUBLIC_OAUTH_CLIENT_SECRET=myclientsecret
