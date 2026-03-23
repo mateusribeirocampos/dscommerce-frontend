@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import ProductCard from "@/app/components/ProductCard";
 import { getProducts } from "@/app/services/productService";
 import { getCategories } from "@/app/services/categoryService";
+import { API_BASE_URL_LABEL } from "@/app/lib/api";
 import type { ProductMinDTO, CategoryDTO, SpringPage } from "@/app/types";
 
 const PAGE_SIZE = 12;
@@ -31,8 +32,8 @@ function ErrorBanner({ onRetry }: { onRetry: () => void }) {
         Não foi possível carregar os produtos
       </p>
       <p className="text-zinc-600 text-sm mb-6">
-        Verifique se o Spring Boot está rodando em{" "}
-        <code className="text-indigo-400">localhost:8080</code>
+        Verifique se a API configurada nesta build estah acessivel em{" "}
+        <code className="text-indigo-400 break-all">{API_BASE_URL_LABEL}</code>
       </p>
       <button
         onClick={onRetry}

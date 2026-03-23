@@ -193,3 +193,4 @@ vite.config.ts.timestamp-*
 /docs/
 CLAUDE.md
 SKILL.md
+.env*.local

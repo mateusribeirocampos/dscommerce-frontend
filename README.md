@@ -158,14 +158,15 @@ npm run dev                   # http://localhost:3000
 
 ### Environment variables
 
-| Variable | Description | Default (dev) |
-|----------|-------------|---------------|
-| `NEXT_PUBLIC_API_URL` | Spring Boot API base URL | `http://localhost:8080` |
-| `NEXT_PUBLIC_OAUTH_CLIENT_ID` | OAuth2 client ID registered in Spring | `myclientid` |
-| `NEXT_PUBLIC_OAUTH_CLIENT_SECRET` | OAuth2 client secret | `myclientsecret` |
+| Variable | Description | Development | Production |
+|----------|-------------|-------------|------------|
+| `NEXT_PUBLIC_API_URL` | Spring Boot API base URL | Optional fallback to `http://localhost:8080` | Required. Example: `https://project-spring-boot-dscommerce.onrender.com` |
+| `NEXT_PUBLIC_OAUTH_CLIENT_ID` | OAuth2 client ID registered in Spring | `myclientid` | Required |
+| `NEXT_PUBLIC_OAUTH_CLIENT_SECRET` | OAuth2 client secret | `myclientsecret` | Required |
 
 > These values must match `CLIENT_ID` and `CLIENT_SECRET` on the Render backend.
 > Variables prefixed with `NEXT_PUBLIC_` are **embedded at build time** and visible in the browser bundle.
+> In Vercel, changing these variables requires a new deployment, because the browser bundle is rebuilt with the new values.
 
 ### Development accounts
 
@@ -216,6 +217,23 @@ NEXT_PUBLIC_OAUTH_CLIENT_SECRET=myclientsecret
 ```
 
 4. Deploy → Vercel generates a stable branch URL (`-git-main-...vercel.app`)
+
+### Why production no longer falls back to `localhost:8080`
+
+This project previously used `http://localhost:8080` as a generic fallback for `NEXT_PUBLIC_API_URL`.
+That was acceptable for local development, but it created a misleading failure mode in Vercel:
+
+- if a production deployment was built without `NEXT_PUBLIC_API_URL`
+- the frontend silently embedded `localhost:8080` into the browser bundle
+- the catalog and product pages then failed in production while suggesting the backend should be running locally
+
+To avoid masking configuration errors, the frontend now:
+
+- keeps the `localhost:8080` fallback only in `development`
+- requires `NEXT_PUBLIC_API_URL` in production builds
+- shows the configured API base URL in error states instead of a fixed localhost message
+
+This makes Vercel misconfiguration visible immediately and avoids serving a production bundle that behaves like a local-only build.
 
 ### Backend CORS — Render.com
 

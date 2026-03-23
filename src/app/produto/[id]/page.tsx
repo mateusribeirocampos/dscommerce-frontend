@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getProductById } from "@/app/services/productService";
-import { ApiError } from "@/app/lib/api";
+import { API_BASE_URL_LABEL, ApiError } from "@/app/lib/api";
 import { AddToCartButton } from "@/app/components/AddToCartButton";
 import type { ProductDTO } from "@/app/types";
 
@@ -69,14 +69,10 @@ function BackendError() {
           Backend indisponível
         </h1>
         <p className="text-zinc-500 text-sm mb-2">
-          Certifique-se que o Spring Boot está rodando em{" "}
-          <code className="text-indigo-400 bg-indigo-950/40 px-1.5 py-0.5 rounded text-xs">
-            localhost:8080
+          Certifique-se que a API configurada nesta build estah acessivel em{" "}
+          <code className="text-indigo-400 bg-indigo-950/40 px-1.5 py-0.5 rounded text-xs break-all">
+            {API_BASE_URL_LABEL}
           </code>
-        </p>
-        <p className="text-zinc-600 text-xs mb-8">
-          Comando:{" "}
-          <code className="text-zinc-400">mvn spring-boot:run</code>
         </p>
         <Link
           href="/catalogo"
