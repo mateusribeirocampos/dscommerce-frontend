@@ -107,3 +107,14 @@ export type TokenResponse = {
   token_type: string;
   expires_in: number;
 };
+
+/** Sent to POST /auth/forgot-password */
+export type ForgotPasswordDTO = {
+  email: string;
+};
+
+/** Sent to POST /auth/reset-password */
+export type NewPasswordDTO = {
+  token: string;
+  password: string;
+};

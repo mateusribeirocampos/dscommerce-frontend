@@ -28,20 +28,23 @@ type ApiFetchOptions = RequestInit & {
   cache?: RequestCache;
   /** Optional Bearer token for protected endpoints. */
   token?: string;
+  /** Abort the request after this many milliseconds. Default: 20 000 ms. */
+  timeoutMs?: number;
 };
 
 /**
  * Thin wrapper around fetch that:
  *  1. Prepends the base API URL
  *  2. Sets JSON + optional Authorization headers
- *  3. Throws a typed ApiError on non-2xx responses
- *  4. Returns parsed JSON typed as T
+ *  3. Aborts after timeoutMs (default 20 s) to prevent infinite hangs
+ *  4. Throws a typed ApiError on non-2xx responses
+ *  5. Returns parsed JSON typed as T
  */
 export async function apiFetch<T>(
   path: string,
   options: ApiFetchOptions = {}
 ): Promise<T> {
-  const { cache = "no-store", token, ...rest } = options;
+  const { cache = "no-store", token, timeoutMs = 20_000, ...rest } = options;
 
   if (!API_BASE_URL) {
     throw new Error(
@@ -49,25 +52,33 @@ export async function apiFetch<T>(
     );
   }
 
-  const res = await fetch(`${API_BASE_URL}${path}`, {
-    ...rest,
-    cache,
-    headers: {
-      "Content-Type": "application/json",
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      ...rest.headers,
-    },
-  });
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
 
-  if (!res.ok) {
-    throw new ApiError(
-      res.status,
-      `API responded with ${res.status} on ${path}`
-    );
+  try {
+    const res = await fetch(`${API_BASE_URL}${path}`, {
+      ...rest,
+      cache,
+      signal: rest.signal ?? controller.signal,
+      headers: {
+        "Content-Type": "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...rest.headers,
+      },
+    });
+
+    if (!res.ok) {
+      throw new ApiError(
+        res.status,
+        `API responded with ${res.status} on ${path}`
+      );
+    }
+
+    // 204 No Content has no body
+    if (res.status === 204) return undefined as T;
+
+    return res.json() as Promise<T>;
+  } finally {
+    clearTimeout(timer);
   }
-
-  // 204 No Content has no body
-  if (res.status === 204) return undefined as T;
-
-  return res.json() as Promise<T>;
 }

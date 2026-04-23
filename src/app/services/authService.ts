@@ -1,4 +1,4 @@
-import { API_BASE_URL } from "@/app/lib/api";
+import { API_BASE_URL, apiFetch } from "@/app/lib/api";
 import type { TokenResponse } from "@/app/types";
 
 // OAuth2 client credentials — configure in .env.local
@@ -41,4 +41,18 @@ export async function login(
   }
 
   return res.json() as Promise<TokenResponse>;
+}
+
+export async function forgotPassword(email: string): Promise<void> {
+  await apiFetch<void>("/auth/forgot-password", {
+    method: "POST",
+    body: JSON.stringify({ email }),
+  });
+}
+
+export async function resetPassword(token: string, password: string): Promise<void> {
+  await apiFetch<void>("/auth/reset-password", {
+    method: "POST",
+    body: JSON.stringify({ token, password }),
+  });
 }
