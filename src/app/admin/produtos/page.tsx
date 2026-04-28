@@ -185,7 +185,7 @@ export default function AdminProdutosPage() {
     }
   };
 
-  const totalPages = page?.totalPages ?? 0;
+  const totalPages = page?.page.totalPages ?? 0;
 
   // Build pagination range with ellipsis
   function buildPages(total: number, current: number): (number | "...")[] {
@@ -208,7 +208,7 @@ export default function AdminProdutosPage() {
         <div>
           <h1 className="text-xl font-bold text-white">Produtos</h1>
           <p className="text-zinc-500 text-sm mt-0.5">
-            {page ? `${page.totalElements} produto${page.totalElements !== 1 ? "s" : ""} cadastrado${page.totalElements !== 1 ? "s" : ""}` : "Carregando…"}
+            {page ? `${page.page.totalElements} produto${page.page.totalElements !== 1 ? "s" : ""} cadastrado${page.totalElements !== 1 ? "s" : ""}` : "Carregando…"}
           </p>
         </div>
         <Link

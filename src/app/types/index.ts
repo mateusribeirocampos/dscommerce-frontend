@@ -40,13 +40,12 @@ export type ProductInsertDTO = {
 /** Spring Data Page<T> response envelope */
 export type SpringPage<T> = {
   content: T[];
-  totalPages: number;
-  totalElements: number;
-  number: number; // 0-indexed current page
-  size: number;
-  first: boolean;
-  last: boolean;
-  empty: boolean;
+  page: {
+    totalPages: number;
+    totalElements: number;
+    size: number;
+    number: number;
+  };
 };
 
 /** Sent to POST /users/register */

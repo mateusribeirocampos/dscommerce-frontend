@@ -99,8 +99,8 @@ export default function CatalogoPage() {
 
   // ── Derived values ────────────────────────────────────────────────────────
   const products = pageData?.content ?? [];
-  const totalPages = pageData?.totalPages ?? 0;
-  const totalElements = pageData?.totalElements ?? 0;
+  const totalPages = pageData?.page.totalPages ?? 0;
+  const totalElements = pageData?.page.totalElements ?? 0;
   const hasFilters = search || selectedCategory;
 
   const handleClear = () => {
